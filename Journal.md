@@ -25,3 +25,13 @@ A Stack is ideal for managing undo operations because undoing actions should hap
 For example, if I insert "Hello", then " World", and then "!", the "!" should be removed first. After that, " World" should be removed, and finally "Hello".
 
 If I used a Queue instead, the first command I added would be removed first. This would be First-In-First-Out (FIFO), which would not match the normal behavior of an undo system.
+
+--------------------------
+
+Phase 4: Expanding Capabilities
+
+The InsertCommand stores the text it will insert and the position where it belongs. When undoing an insertion, it can simply delete that text from the editor.
+
+The DeleteCommand must save the deleted text before removing it because the text would otherwise be lost. Its undo() method uses the saved text and original position to restore the editor's previous content.
+
+This shows how each command manages its own undo logic. The EditorApp does not need to know how an insertion or deletion is reversed; it only needs to call the command's undo() method.
