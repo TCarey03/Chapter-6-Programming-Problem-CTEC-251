@@ -15,3 +15,13 @@ Having the Command object responsible for its own undo logic makes the EditorApp
 For example, InsertCommand knows that undoing an insertion means deleting the text that was inserted. The EditorApp only needs to call lastCommand.undo().
 
 This also makes the design easier to expand. If I add another type of command later, that command can provide its own undo() behavior without adding more undo logic to EditorApp.
+
+-------------------------
+
+Phase 3: Command History
+
+A Stack is ideal for managing undo operations because undoing actions should happen in Last-In-First-Out (LIFO) order. The most recent command should always be the first command that gets undone.
+
+For example, if I insert "Hello", then " World", and then "!", the "!" should be removed first. After that, " World" should be removed, and finally "Hello".
+
+If I used a Queue instead, the first command I added would be removed first. This would be First-In-First-Out (FIFO), which would not match the normal behavior of an undo system.
