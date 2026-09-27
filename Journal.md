@@ -35,3 +35,13 @@ The InsertCommand stores the text it will insert and the position where it belon
 The DeleteCommand must save the deleted text before removing it because the text would otherwise be lost. Its undo() method uses the saved text and original position to restore the editor's previous content.
 
 This shows how each command manages its own undo logic. The EditorApp does not need to know how an insertion or deletion is reversed; it only needs to call the command's undo() method.
+
+--------------------------
+
+Phase 5: Macro Commands
+
+The MacroCommand demonstrates the Composite Pattern because it contains multiple Command objects and treats them as one larger command. Each individual command can still execute and undo itself, but the MacroCommand groups them together.
+
+This allows the EditorApp to treat a complex sequence of actions as if it were one command. For example, the template can insert a header, a newline, and a footer with one call to executeCommand().
+
+When the macro is undone, the commands are undone in reverse order. This is important because the last action performed should be the first action reversed.
