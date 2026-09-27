@@ -20,31 +20,23 @@ public class EditorApp {
         TextEditor editor = new TextEditor();
         EditorApp app = new EditorApp();
 
-        Command firstInsert =
-                new InsertCommand(editor, 0, "Hello");
+        // Insert the original text
+        app.executeCommand(
+                new InsertCommand(editor, 0, "Hello World!")
+        );
 
-        app.executeCommand(firstInsert);
-        System.out.println("After first insert: " + editor.getText());
+        System.out.println("Original text: " + editor.getText());
 
-        Command secondInsert =
-                new InsertCommand(editor, 5, " World");
+        // Delete "World"
+        app.executeCommand(
+                new DeleteCommand(editor, 6, 5)
+        );
 
-        app.executeCommand(secondInsert);
-        System.out.println("After second insert: " + editor.getText());
+        System.out.println("After deletion: " + editor.getText());
 
-        Command thirdInsert =
-                new InsertCommand(editor, 11, "!");
-
-        app.executeCommand(thirdInsert);
-        System.out.println("After third insert: " + editor.getText());
-
+        // Undo the deletion
         app.undo();
-        System.out.println("After first undo: " + editor.getText());
 
-        app.undo();
-        System.out.println("After second undo: " + editor.getText());
-
-        app.undo();
-        System.out.println("After third undo: " + editor.getText());
+        System.out.println("After undo: " + editor.getText());
     }
 }
