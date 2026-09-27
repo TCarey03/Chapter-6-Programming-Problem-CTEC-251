@@ -1,15 +1,18 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class EditorApp {
-    private Command lastCommand;
+    private Deque<Command> commandHistory = new ArrayDeque<>();
 
     public void executeCommand(Command command) {
         command.execute();
-        lastCommand = command;
+        commandHistory.push(command);
     }
 
     public void undo() {
-        if (lastCommand != null) {
-            lastCommand.undo();
-            lastCommand = null;
+        if (!commandHistory.isEmpty()) {
+            Command command = commandHistory.pop();
+            command.undo();
         }
     }
 
@@ -17,15 +20,31 @@ public class EditorApp {
         TextEditor editor = new TextEditor();
         EditorApp app = new EditorApp();
 
-        Command insertCommand =
-                new InsertCommand(editor, 0, "Hello World!");
+        Command firstInsert =
+                new InsertCommand(editor, 0, "Hello");
 
-        app.executeCommand(insertCommand);
+        app.executeCommand(firstInsert);
+        System.out.println("After first insert: " + editor.getText());
 
-        System.out.println("After insert: " + editor.getText());
+        Command secondInsert =
+                new InsertCommand(editor, 5, " World");
+
+        app.executeCommand(secondInsert);
+        System.out.println("After second insert: " + editor.getText());
+
+        Command thirdInsert =
+                new InsertCommand(editor, 11, "!");
+
+        app.executeCommand(thirdInsert);
+        System.out.println("After third insert: " + editor.getText());
 
         app.undo();
+        System.out.println("After first undo: " + editor.getText());
 
-        System.out.println("After undo: " + editor.getText());
+        app.undo();
+        System.out.println("After second undo: " + editor.getText());
+
+        app.undo();
+        System.out.println("After third undo: " + editor.getText());
     }
 }
