@@ -1,4 +1,5 @@
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 
 public class EditorApp {
@@ -20,23 +21,29 @@ public class EditorApp {
         TextEditor editor = new TextEditor();
         EditorApp app = new EditorApp();
 
-        // Insert the original text
-        app.executeCommand(
-                new InsertCommand(editor, 0, "Hello World!")
+        Command header =
+                new InsertCommand(editor, 0, "HEADER");
+
+        Command newline =
+                new InsertCommand(editor, 6, "\n");
+
+        Command footer =
+                new InsertCommand(editor, 7, "FOOTER");
+
+        MacroCommand template = new MacroCommand(
+                Arrays.asList(header, newline, footer)
         );
 
-        System.out.println("Original text: " + editor.getText());
+        // Execute the entire template
+        app.executeCommand(template);
 
-        // Delete "World"
-        app.executeCommand(
-                new DeleteCommand(editor, 6, 5)
-        );
+        System.out.println("After macro:");
+        System.out.println(editor.getText());
 
-        System.out.println("After deletion: " + editor.getText());
-
-        // Undo the deletion
+        // Undo the entire template
         app.undo();
 
-        System.out.println("After undo: " + editor.getText());
+        System.out.println("After undo:");
+        System.out.println(editor.getText());
     }
 }
